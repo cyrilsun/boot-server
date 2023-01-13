@@ -1,0 +1,56 @@
+version: '3.7'
+services:
+  boot-server:
+    container_name: boot-server
+    image: boot-server
+    restart: always
+    ports:
+      - "9090:8080"
+    environment:
+      - TZ=Asia/Shanghai
+    volumes:
+      - ./config/application-prod.yml:/application-prod.yml
+    networks:
+      - net_local
+    depends_on:
+      - mysql
+      - redis
+  mysql:
+    image: mysql:8
+    container_name: mysql
+    restart: always
+    environment:
+      TZ: Asia/Shanghai
+      MYSQL_ROOT_PASSWORD: asdf.1234
+      MYSQL_DATABASE: boot-sever
+    command:
+      --default-authentication-plugin=mysql_native_password
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_general_ci
+      --explicit_defaults_for_timestamp=true
+      --lower_case_table_names=1
+    ports:
+      - "13306:3306"
+    volumes:
+      - ./mysql/data:/var/lib/mysql
+      - ./initdb:/docker-entrypoint-initdb.d
+      # 手动sql
+      - ./mysql/manualdb:/manualdb
+    networks:
+      - net_local
+  redis:
+    image: "redis:6.2.6"
+    container_name: redis
+    environment:
+      TZ: Asia/Shanghai
+    restart: always
+    command: "redis-server --appendonly yes --requirepass asdf.1234"
+    ports:
+      - "16379:6379"
+    volumes:
+      - ./redis/data:/data"
+    networks:
+      - net_local
+networks:
+  net_local:
+    external: true

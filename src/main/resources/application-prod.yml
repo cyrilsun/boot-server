@@ -1,0 +1,22 @@
+logging:
+  level:
+    ROOT: INFO
+    com.mrsun: DEBUG
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://mysql:3306/boot-server?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8&createDatabaseIfNotExist=true&rewriteBatchedStatements=true
+    username: root
+    password: asdf.1234
+  redis:
+    host: redis
+    port: 6379
+    password: asdf.1234
+    timeout: 5000
+
+
+application:
+  jwt:
+    key: 5554d134cbf940e29ab7590142ea45afb8d15a28c0784ac2aaf64788ccc301bcc008b4d9b7dd43f09fa41d6ceb553f0c
+    validity-in-seconds: 86400
